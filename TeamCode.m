@@ -58,13 +58,11 @@ else    %if neither of the above conditions are met, the rest of the code runs a
         Tf = Max;    %Calculates the average temp difference from the data
         DeltaT = (((Tf-32)*(5/9))+273.15);  %Converts the temperature difference to kelvin
         heatCap = 1000;  %Specific heat of air
-        VolInch = (0.5*(5*8.37))*15;  %Volume of air
-        VolM = VolInch / 61024; %Converts the volume from cubic inches to cubic meters
+        VolM = 0.020816; %Volume of air
         Rho = 1.225;  %Density of air
         Qab = VolM*Rho*heatCap*DeltaT;    %Calculates Qab
-        %% Qin
-        AreaIn = ((15*9.75)+(2*(12*15))+(2*(12*8.37)));  %Collection area of my prototype
-        AreaM = AreaIn / 1550;  %Converts the collection area from inches squared to meters squared
+        %% Qin  
+        AreaM = 0.2877;  %Collection area
         irradiance = 3690;   %Average incidence in Blacksburg in March
         t = timeatmax - min(TimeData);  %duration to max diff in temp
         Qin = (((irradiance*AreaM)/12)*t);   %Calculates Qin
