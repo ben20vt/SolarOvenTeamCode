@@ -1,5 +1,5 @@
 %% header
-%Ben Koniers
+%Team Analysis Code
 %Spring 2021 Enge1216
 %% Initialization
 close
