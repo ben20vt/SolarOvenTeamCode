@@ -7,21 +7,18 @@ clc
 clear
 %% Importing Data
 templogname = input('What is the name of the file containing sensor data?: ', 's');
-templog = readmatrix(templogname);    %Imports the full log of temperature data
+
+templog = readtable(templogname);    %Imports the full log of temperature data as a table
 %% Manipulating Imported Data Into a Workable Format for Matlab
-DatetimeStrings = (templog(:,1));
-%Date = datetime(DatetimeStrings,'Format','MM/dd/yyyy hh:mm:ss a');   %Converts the input start date from a string to a datetime array
-Date = datetime(DatetimeStrings,'ConvertFrom', 'excel');
-PosixTime_Calculated = posixtime(Date); %Converts the datetime in UTC to a Unix timestamp
-
-
-
-
+DatetimeStrings = (templog(:,1)); %Pull first column as datetimes
+Dates = table2array(DatetimeStrings); %Convert this table to an array for posixtime
+PosixTime_Calculated = posixtime(Dates); %Converts the datetime in UTC to a Unix timestamp
 %% 
-
 TimeEnd = max(PosixTime_Calculated);  %Calculates the Unix timestamp of the end date / time by adding the duration in seconds to the starting Unix timestamp
 TimeStart = min(PosixTime_Calculated);    %specifies if the user input start time/date occurs outside the supplied data, either before or below
-templogappended = ([PosixTime_Calculated,templog(:,2),templog(:,3)]);     %Creates a new matrix containing a a column of the datetime timestamps replaced with Unix timestamps for MATLAB to interpret, as well as oven and ambient temperature data
+%!!!! Notice that both temps are converted to array here so that all data
+%remains the same after this instruction
+templogappended = ([PosixTime_Calculated,table2array(templog(:,2)),table2array(templog(:,3))]);     %Creates a new matrix containing a a column of the datetime timestamps replaced with Unix timestamps for MATLAB to interpret, as well as oven and ambient temperature data
 TimeData = templogappended(:,1);    %Defines the time data as the vector making up the 5th column of the data matrix
 OvenTempData = templogappended(:,2);    %Defines the oven temperature data as the vector making up the 2nd column of the data matrix
 AmbientTempData = templogappended(:,3);    %Defines the ambient temperature data as the vector making up the 3rd column of the data matrix
@@ -35,7 +32,7 @@ plot(TimeData,AmbientTempData,'b-*' );    %plots the ambient temperatures agains
 hold on     %keeps the same graph so more data can be added instead of making a new graph
 plot(TimeData,diff,'o--');     %plots the temperature difference against time
 xlabel('Timestamp (seconds)'); %adds an x axis label
-ylabel('Degrees (Fahrenheit)'); %adds a y axis label
+ylabel('Degrees (Celsius)'); %adds a y axis label
 title('Oven Temperature, Ambient Temperature, and Temperature Difference vs Time'); %adds a graph title
 legend('Oven Interior Temperature','Ambient Temperature','Temperature Difference'); %adds a legend
 %% Calculate Max Difference and Time of Occurence
