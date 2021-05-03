@@ -1,4 +1,4 @@
-%% header
+  %% header
 %Team Analysis Code
 %Spring 2021 Enge1216
 %% Initialization
@@ -45,7 +45,7 @@ fprintf("This means on %s the oven reached its greatest temperature above the am
 %% Calculating Efficiency
     %% Qab
     Tf = Max;    %Calculates the average temp difference from the data
-    DeltaT = (Tf + 273);  %Converts the temperature difference to kelvin
+    DeltaT = (Tf + 273.15);  %Converts the temperature difference to kelvin
     heatCap = 1000;  %Specific heat of air
     VolM = 0.0216411; %Volume of air
     Rho = 1.225;  %Density of air
@@ -57,12 +57,11 @@ fprintf("This means on %s the oven reached its greatest temperature above the am
     Qin = (((irradiance*AreaM)/12)*t);   %Calculates Qin
 n = (Qab/Qin);    %Calculates efficiency
 disp(' ');   %Adds a line break in the output window to improve readability
-disp("The estimated efficiency of the solar oven is: " + n*100 + "%");  %displays the calculated efficiency
+disp("The estimated efficiency of the solar oven is: " + n + "%");  %displays the calculated efficiency
 %% Calculate and display T max for given time of year or location
 ijuly = 5500;    %average incidence in July in Blacksburg
-tdiffjuly = ((n*AreaM*((ijuly/12)*t))/(Rho*VolM*heatCap));
-%tdiffjuly = ((Rho*VolM*heatCap*DeltaT*n)/((ijuly)*AreaM));    %Theoretical max temp difference in July in Blacksburg
-tjulyinternal = tdiffjuly + 32;     %Calculates the theoretical max oven temp in July with an ambient temp of 90°F 
+tdiffjuly = ((Rho*VolM*heatCap*DeltaT*n)/((ijuly)*AreaM)) - 273.15;    %Theoretical max temp difference in July in Blacksburg
+tjulyinternal = (tdiffjuly + 32);     %Calculates the theoretical max oven temp in July with an ambient temp of 90°F 
 disp(' ');   %Adds a line break in the output window to improve readability
 disp("The theoretical maximum achievable temperature gradient for July in Blacksburg is: " + tdiffjuly + "°C. Assuming an ambient temperature of 32°C, this means the oven is capable of reaching internal temperatures of " + tjulyinternal + "°C");  %Displays the theoretical max temp gradient in July in Blacksburg w/ an assumed ambient temp of 90°F
 %% Exports dates, time, temperatures, and temp difference to excel file
